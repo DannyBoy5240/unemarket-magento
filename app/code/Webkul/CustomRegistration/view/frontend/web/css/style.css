@@ -1,0 +1,133 @@
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+.wk_images {
+    position: relative;
+    max-width: 90px;
+    border: 2px solid #e2e2e2;
+    box-shadow: 0 0 4px 2px;
+    margin: 2px;
+}
+.wk_images img {
+    object-fit: contain;
+}
+.wk_images .wk-del-icon {
+    position: absolute;
+    top: -13px;
+    right: -5px;
+    padding: 5px;
+    font-size: 19px;
+    cursor: pointer;
+}
+.wk_file ~ .wk-del-file-icon {
+    padding: 5px;
+    font-size: 19px;
+    cursor: pointer;
+    margin-left: 12px;
+    font-weight: bold;
+}
+.wk-edit-additional-info ._has-datepicker ~ .ui-datepicker-trigger:before {
+    font-size: 28px;
+    line-height: 23px;
+}
+.wk-edit-additional-info input.dob_type {
+    padding-right: 3.5rem;
+    width: 15rem;
+}
+
+/* for making the checkbox as toggle field */
+.wk-edit-additional-info.fieldset .field.toggle-field {
+    display: inline-block;
+    width: 100%;
+}
+.wk-edit-additional-info.fieldset .field.toggle-field>label.label {
+    float: left;
+    width: calc((100%) * 0.2) !important;
+}
+.toggle-field>.control {
+    float: left;
+    margin-left: 30px;
+    width: calc((100%) * 0.5 - 30px) !important;
+}
+
+.admin__actions-switch {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+.admin__actions-switch input.admin__actions-switch-checkbox {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+.admin__actions-switch-label {
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    display: inline-block;
+    height: 22px;
+    line-height: 22px;
+    position: relative;
+    user-select: none;
+    vertical-align: middle;
+}
+.admin__actions-switch-checkbox:checked+.admin__actions-switch-label:before {
+    left: 15px;
+}
+.admin__actions-switch-label:before,
+.admin__actions-switch-label:after {
+    left: 0;
+    position: absolute;
+    right: auto;
+    top: 0;
+}
+.admin__actions-switch-label:before {
+    background: #ffffff;
+    border: 1px solid #aaa6a0;
+    border-radius: 100%;
+    content: '';
+    display: block;
+    height: 22px;
+    transition: left 0.2s ease-in 0s;
+    width: 22px;
+    z-index: 1;
+}
+.admin__actions-switch-checkbox:checked+.admin__actions-switch-label:after {
+    background: #79a22e;
+}
+.admin__actions-switch-label:after {
+    background: #e3e3e3;
+    border: 1px solid #aaa6a0;
+    border-radius: 12px;
+    content: '';
+    display: block;
+    height: 22px;
+    transition: background 0.2s ease-in 0s;
+    vertical-align: middle;
+    width: 37px;
+    z-index: 0;
+}
+.admin__actions-switch-checkbox:checked+.admin__actions-switch-label .admin__actions-switch-text:before {
+    content: attr(data-text-on);
+}
+.admin__actions-switch-text:before {
+    content: attr(data-text-off);
+    padding-left: 47px;
+    white-space: nowrap;
+}
+#read-term-condition, #read-privacy {
+    cursor: pointer;
+    color: #006bb4;
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Sales\Controller\Adminhtml\Order\Create\Save">
+        <plugin name="before-save_order" type="Webkul\CustomRegistration\Plugin\Order\Save" sortOrder="1" />
+    </type>
+    <type name="Magento\Customer\Model\Metadata\Form">
+        <plugin name="after-getuserattributes" type="Webkul\CustomRegistration\Plugin\CustomFields\Metadata" sortOrder="1" />
+    </type>
+    <type name="Magento\Ui\Model\Export\MetadataProvider">
+        <plugin name="export_custmer_csv_row_data" type="Webkul\CustomRegistration\Plugin\Export\ExportRowDataModification" sortOrder="1" disabled="false"/>
+    </type>
+</config>

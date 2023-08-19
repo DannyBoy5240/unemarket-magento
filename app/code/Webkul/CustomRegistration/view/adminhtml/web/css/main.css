@@ -1,0 +1,41 @@
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+ #customer_termandcondition_customregistration_registration_field_product_information_author {
+    border: none;
+    clear: both;
+    color: #303030;
+    cursor: pointer;
+    display: block;
+    font-size: 1.7rem;
+    font-weight: 600;
+    letter-spacing: .025em;
+    padding: 0.3rem 2.8rem 0.9rem 0;
+    position: relative;
+    text-decoration: none;
+    transition: color .15s linear;
+    margin-top: 16px;
+}
+#customer_termandcondition_customregistration_registration_field_product_information_author{
+    display: none;
+}
+.admin__page-nav.wk-config-tab-class._collapsed._show ._collapsible strong:before {
+    content: "";
+    background: url(../images/configtab/logo.png) no-repeat scroll 0 0 transparent;
+    width: 100%;
+    height: 26px;
+    display: inline-block;
+    vertical-align: bottom;
+}
+.admin__page-nav.wk-config-tab-class._collapsed._show ._collapsible strong {
+    font-size: 0;
+}
+label[for=customer_termandcondition_customregistration_registration_field_product_information_author] {
+    display: none !important;
+}

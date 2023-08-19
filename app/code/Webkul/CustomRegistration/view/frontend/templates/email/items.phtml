@@ -1,0 +1,151 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+?>
+<?php /** @var $customRegistrationViewModel \Webkul\CustomRegistration\ViewModel\CustomRegistration */ ?>
+<?php $customRegistrationViewModel = $block->getCustomRegistrationViewModel(); ?>
+<?php $_order = $block->getOrder() ?>
+<?php if ($_order): ?>
+    <?php
+        $orderHelper = $customRegistrationViewModel->getCustomOrderHelper();
+        $_customerData = $orderHelper->getCurrentCustomer($_order->getCustomerId())->toArray();
+        $websiteId = $_customerData['website_id'] ?? 0;
+        $attributeCollection = $orderHelper->attributeCollectionFilter($websiteId, false, true); ?>
+    <?php if (!empty($_customerData) && $attributeCollection->getSize()): ?>
+        <table cellspacing="0" cellpadding="0" border="0" width="650">
+            <thead>
+                <tr>
+                    <th align="left" width="325" bgcolor="#EAEAEA"
+                        style="font-size:13px; padding:5px 9px 6px 9px; line-height:1em;">
+                        <?= $block->escapeHtml(__('Additional Information:')) ?> </th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td valign="top" style="font-size:12px; padding:7px 9px 9px 9px; border-left:1px solid #EAEAEA;
+                                        border-bottom:1px solid #EAEAEA; border-right:1px solid #EAEAEA;">
+                    <table cellspacing="0" class="form-list">
+                            <?php foreach ($attributeCollection as $attributeData): ?>
+                                <?php $attrAsArray = $attributeData->toArray(); ?>
+                                <?php $_fieldValue = '';
+                                $optionLabel = [];
+                                foreach ($_customerData as $key => $value) {
+                                    if ($attrAsArray['attribute_code'] == $key) {
+                                        if ($attrAsArray['frontend_input'] == 'date') {
+                                            if ($value) {
+                                                $_fieldValue = date('m/d/yy', strtotime($value));
+                                            }
+                                        } elseif ($attrAsArray['frontend_input'] == 'boolean') {
+                                                $_fieldValue = $value;
+                                        } elseif ($attrAsArray['frontend_input'] == 'select') {
+                                            foreach ($attributeData->getSource()->getAllOptions() as $instance) {
+                                                if ($value == $instance['value']) {
+                                                    $_fieldValue = $instance['label'];
+                                                }
+                                            }
+                                        } elseif ($attrAsArray['frontend_input'] == 'multiselect') {
+                                            foreach ($attributeData->getSource()->getAllOptions() as $instance) {
+                                                
+                                                if (is_array($value)) {
+                                                    $value = $value;
+                                                } elseif (is_string($value)) {
+                                                    $value = explode(',', $value);
+                                                }
+
+                                                if (in_array($instance['value'], $value)) {
+                                                    $optionLabel[] = $instance['label'];
+                                                }
+                                            }
+                                            $_fieldValue = implode(',', $optionLabel);
+                                        } elseif ($attrAsArray['frontend_input'] == 'image') {
+                                            $url = $orderHelper->encodeFileName($attrAsArray['frontend_input'], $value);
+                                            $_fieldValue = "<img class='wk_images' width='75' height='75'
+                                                alt='image' src='".$url."'/>";
+                                        } elseif ($attrAsArray['frontend_input'] == 'file') {
+                                            $url = $orderHelper->encodeFileName($attrAsArray['frontend_input'], $value);
+                                            $_fieldValue = "<a class='wk_images' alt='file' target='_blank'
+                                                href='".$url."'>".__('Download')."</a>";
+                                        } else {
+                                            $_fieldValue = $block->escapeHtml($value);
+                                        }
+                                    }
+                                } ?>
+                                <?php if ($_fieldValue != ''
+                                            && $orderHelper->isShowInEmail($attributeData->getId())): ?>
+                                    <tr>
+                                        <td style="font-size:12px;padding:7px 9px 9px 9px;" class="label">
+                                            <label><?= $block->escapeHtml($attributeData->getStoreLabel()) ?></label>
+                                        </td>
+                                        <td style="font-size:12px;padding:7px 9px 9px 9px;" class="label">
+                                            <label><?= /** @escapeNotVerified */ $_fieldValue ?></label>
+                                        </td>
+                                    </tr>
+                                <?php endif ?>
+
+                                        
+                            <?php endforeach;?>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    <?php endif; ?>
+
+    <?php $_items = $_order->getAllItems(); ?>
+    <table class="email-items">
+        <thead>
+            <tr>
+                <th class="item-info">
+                    <?= $block->escapeHtml(__('Items')) ?>
+                </th>
+                <th class="item-qty">
+                    <?= $block->escapeHtml(__('Qty')) ?>
+                </th>
+                <th class="item-price">
+                    <?= $block->escapeHtml(__('Price')) ?>
+                </th>
+            </tr>
+        </thead>
+        <?php foreach ($_items as $_item): ?>
+            <?php
+            if ($_item->getParentItem()) {
+                continue;
+            }
+            ?>
+            <tbody>
+                <?= $block->getItemHtml($_item) ?>
+            </tbody>
+        <?php endforeach; ?>
+        <tfoot class="order-totals">
+            <?= $block->getChildHtml('order_totals') ?>
+        </tfoot>
+    </table>
+    <?php $messageHelper = $customRegistrationViewModel->getGiftMessageHelper(); ?>
+    <?php if ($messageHelper->isMessagesAllowed('order', $_order, $_order->getStore())
+            && $_order->getGiftMessageId()): ?>
+        <?php $_giftMessage = $messageHelper->getGiftMessage($_order->getGiftMessageId()); ?>
+        <?php if ($_giftMessage): ?>
+            <br />
+            <table class="message-gift">
+                <tr>
+                    <td>
+                        <h3><?= $block->escapeHtml(__('Gift Message for this Order')) ?></h3>
+                        <strong><?= $block->escapeHtml(__('From:')) ?>
+                        </strong> <?= $block->escapeHtml($_giftMessage->getSender()) ?>
+                        <br /><strong><?= $block->escapeHtml(__('To:')) ?>
+                        </strong> <?= $block->escapeHtml($_giftMessage->getRecipient()) ?>
+                        <br /><strong><?= $block->escapeHtml(__('Message:')) ?></strong>
+                        <br /><?= $block->escapeHtml($_giftMessage->getMessage()) ?>
+                    </td>
+                </tr>
+            </table>
+        <?php endif; ?>
+    <?php endif; ?>
+<?php endif; ?>

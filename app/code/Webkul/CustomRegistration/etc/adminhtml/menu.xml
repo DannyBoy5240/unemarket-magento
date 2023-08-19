@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add id="Webkul_CustomRegistration::customregistration" title="Custom Registration" module="Webkul_CustomRegistration" sortOrder="20" resource="Webkul_CustomRegistration::customregistration" />
+
+		<add id="Webkul_CustomRegistration::index" title="Manage Custom Fields" module="Webkul_CustomRegistration" parent="Webkul_CustomRegistration::menu" action="customregistration/customfields/index" resource="Webkul_CustomRegistration::index"/>
+
+		<add id="Webkul_CustomRegistration::menu" title="Menu" module="Webkul_CustomRegistration" sortOrder="11" parent="Webkul_CustomRegistration::customregistration" dependsOnModule="Webkul_CustomRegistration" resource="Webkul_CustomRegistration::customregistration"/>
+	</menu>
+</config>

@@ -1,0 +1,6 @@
+<?php if ($block->canShowTab()): ?>
+    <?php echo $block->getLayout()->createBlock(\Magento\Backend\Block\Widget\Form\Generic::class)->setData([
+        'id' => 'category_form_custom_group',
+        'class' => 'admin__fieldset',
+    ])->toHtml() ?>
+<?php endif; ?>

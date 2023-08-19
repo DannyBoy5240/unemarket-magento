@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="category_form">
+            <action method="setContainerClass">
+                <argument name="class" xsi:type="string">admin__fieldset-two-columns admin__fieldset-expanded</argument>
+            </action>
+            <block class="Vendor\CustomCategoryGroupModule\Block\Adminhtml\Category\Edit\CustomGroup" name="category_edit_custom_group" template="Vendor_CustomCategoryGroupModule::category/edit/custom_group.phtml"/>
+            <action method="addAdditionalFields" ifconfig="catalog/frontend/flat_catalog_category">
+                <argument name="fieldList" xsi:type="array">
+                    <item name="custom_category_group" xsi:type="string">category.form.custom_category_group</item>
+                </argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,19 @@
+{
+    "wk_customfields": {
+        "column": {
+            "entity_id": true,
+            "attribute_code": true,
+            "attribute_id": true,
+            "attribute_label": true,
+            "show_in_order": true,
+            "show_in_email": true,
+            "status": true,
+            "has_parent": true,
+            "wk_frontend_input": true,
+            "website_ids": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

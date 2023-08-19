@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <customer_termandcondition>
+            <parameter>
+			    <privacy_heading><![CDATA[Privacy & Cookie Policy]]></privacy_heading>
+			    <term_heading><![CDATA[Terms & Conditions]]></term_heading>
+			    <button_text><![CDATA[OK]]></button_text>
+			    <termcondition><![CDATA[Terms & Conditions]]></termcondition>
+			    <privacy><![CDATA[Privacy & Cookie Policy]]></privacy>
+            </parameter>
+        </customer_termandcondition>
+    </default>
+</config>

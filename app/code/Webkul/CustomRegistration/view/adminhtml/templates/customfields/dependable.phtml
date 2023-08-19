@@ -1,0 +1,170 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+
+$data = $block->getModel();
+$customFieldsData = $block->getCustomFieldsData();
+$fileSignal = 0;
+$fileType = '';
+$booleanSignal = 0;
+$textSignal = 0;
+$codeSignal = 0;
+$textareaSignal = 0;
+$dependableTextareaSignal = 0;
+$selectSignal = 0;
+$hasParent = $customFieldsData->getHasParent();
+$dependableSelectoptionSignal = 0;
+$dependableAllowedExtensionsSignal = 0;
+$dependableBoolean = 0;
+$fileExtensionValue = '';
+$defaultExtensionValue = '';
+$dependableFrontendInput = '';
+$selectoption = '';
+$dependableAllowedExtensions = '';
+if ($data->getFrontendInput() == "image") {
+    $fileSignal = 1;
+    $fileType = 'image';
+    $fileExtensionValue = $data->getNote();
+    $defaultExtensionValue = 'jpg,png,gif';
+}
+if ($data->getFrontendInput() == "file") {
+    $fileSignal = 1;
+    $fileType = 'file';
+    $fileExtensionValue = $data->getNote();
+    $defaultExtensionValue = 'pdf,zip,doc';
+}
+if ($data->getFrontendInput() == "text") {
+    $textSignal = 1;
+}
+if ($data->getFrontendInput() == "boolean") {
+    $booleanSignal = 1;
+}
+if ($data->getAttributeId()) {
+    $codeSignal = 1;
+}
+if ($data->getFrontendInput() == "textarea") {
+    $textareaSignal = 1;
+}
+if ($data->getFrontendInput() == "select"
+    || $data->getFrontendInput() == "multiselect"
+    || $data->getFrontendInput() == "radio"
+) {
+    $selectSignal = 1;
+    $options = $data->getSource()->getAllOptions();
+    foreach ($options as $key => $value) {
+        if ($value['value'] != '') {
+            $selectoption .=$value['label'].',';
+        }
+    }
+}
+// $isRequiredArray = explode(' ', $data->getFrontendClass());
+
+/*if (in_array('dependable_field_'.$data->getAttributeCode(), $isRequiredArray)
+    || $data->getHasParent()
+) {
+    $dependableData = $block->getDependableModel();
+    $hasParent = 1;
+    $dependableFrontendInput = 'dependable_'.$dependableData->getFrontendInput();
+    if ($dependableFrontendInput == "dependable_select" || $dependableFrontendInput == "dependable_multiselect") {
+        $dependableSelectoptionSignal = 1;
+    }
+    if ($dependableFrontendInput == "dependable_file") {
+        $fileType = 'file';
+        $dependableAllowedExtensions = $dependableData->getNote();
+        $dependableAllowedExtensionsSignal = 1;
+        $defaultExtensionValue = 'pdf,zip,doc';
+    }
+    if ($dependableFrontendInput == "dependable_image") {
+        $fileType = 'image';
+        $dependableAllowedExtensions = $dependableData->getNote();
+        $dependableAllowedExtensionsSignal = 1;
+        $defaultExtensionValue = 'jpg,png,gif';
+    }
+    if ($dependableFrontendInput == "dependable_boolean") {
+        $dependableBoolean = 1;
+    }
+}*/
+?>
+
+<script id="allowed_extension_template" type="text/x-magento-template">
+    <div class="admin__field field field-allowed_extensions  required _required
+         allowed_extensions_type_container <%- (data.attrType == 'image') ? 'hidden' : '' %>"
+         data-ui-id="adminhtml-customfields-edit-0-form-fieldset-element-form-field-allowed_extensions">
+        <label class="label admin__field-label" for="allowed_extensions"
+               data-ui-id="adminhtml-customfields-edit-0-form-fieldset-element-text-input-name-label">
+            <span><?= $block->escapeHtml(__('Allowed Extension')) ?></span>
+        </label>
+        <div class="admin__field-control control">
+            <input id="customfields_allowed_extensions" name="allowed_extensions"
+                   data-ui-id="adminhtml-customfields-edit-0-form-fieldset-element-text-allowed-extensions"
+                   value="<%- (data.attrType == 'image')
+                        ? data.allowedextension : '<?= /** @escapeNotVerified */ $fileExtensionValue; ?>' %>"
+                   title="<?= $block->escapeHtml(__('Allowed Extension')) ?>" type="text"
+                   class=" input-text admin__control-text required-entry _required <%- (data.attrType == 'image')
+                        ? 'hidden' : '' %>" aria-required="true">
+            <?php if ($defaultExtensionValue != ''): ?>
+            <comment>eg:<?= /** @escapeNotVerified */ $defaultExtensionValue; ?></comment>
+            <?php else: ?>
+             <comment>eg:<%- data.allowedextension %></comment>
+            <?php endif; ?>
+        </div>
+    </div>
+</script>
+<script id="dependable_allowed_extension_template" type="text/x-magento-template">
+    <div class="admin__field field field-dependable-allowed-extensions  required
+            _required dependable_allowed_extensions_type_container <%- (data.attrType == 'image') ? 'hidden' : '' %>"
+         data-ui-id="adminhtml-customfields-edit-0-form-fieldset-element-form-field-dependableAllowedExtensions">
+        <label class="label admin__field-label" for="allowed_extensions"
+               data-ui-id="adminhtml-customfields-edit-0-form-fieldset-element-text-input-name-label">
+            <span><?= $block->escapeHtml(__('Dependable Allowed Extension')) ?></span>
+        </label>
+        <div class="admin__field-control control">
+            <input id="customfields_allowed_extensions" name="dependableAllowedExtensions"
+                   data-ui-id="adminhtml-customfields-edit-0-form-fieldset-element-text-dependable-allowed-extensions"
+                   value="<%- (data.attrType == 'image')
+                        ? data.dependExtension : '<?= /** @escapeNotVerified */ $dependableAllowedExtensions; ?>' %>"
+                   title="<?= $block->escapeHtml(__('Dependable Allowed Extension')) ?>" type="text"
+                   class=" input-text admin__control-text required-entry _required" aria-required="true">
+            <?php if ($defaultExtensionValue != ''): ?>
+            <comment>eg:<?= /** @escapeNotVerified */ $defaultExtensionValue; ?></comment>
+            <?php else: ?>
+            <comment>eg:<%- data.dependExtension %></comment>
+            <?php endif; ?>
+        </div>
+    </div>
+</script>
+<?php
+$optionData = [
+    'fileSignal'                    => $fileSignal,
+    'fileType'                      => $fileType,
+    'textSignal'                    => $textSignal,
+    'codeSignal'                    => $codeSignal,
+    'textareaSignal'                => $textareaSignal,
+    'dependableTextareaSignal'      => $dependableTextareaSignal,
+    'hasParent'                     => $hasParent,
+    'selectSignal'                  => $selectSignal,
+    'dependableSelectoptionSignal'  => $dependableSelectoptionSignal,
+    'dependableAllowedAxtensionsSignal' => $dependableAllowedExtensionsSignal,
+    'fileExtensionValue'                => $fileExtensionValue,
+    'dependableExtnValue'           => $dependableAllowedExtensions,
+    'booleanSignal'                 => $booleanSignal,
+    'defaultExtensionValue'         => $defaultExtensionValue,
+    'dependableBoolean'             => $dependableBoolean,
+    'attributeOptionsUrl' => $block->getUrl('customregistration/attribute/options')
+];
+$serializedData = json_encode($optionData);
+?>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "customDependableField": <?= /* @noEscape */ $serializedData; ?>
+    }
+}
+</script>

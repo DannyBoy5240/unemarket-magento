@@ -1,0 +1,409 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+?>
+<?php /** @var $customRegistrationViewModel \Webkul\CustomRegistration\ViewModel\CustomRegistration */ ?>
+<?php
+    $customRegistrationViewModel = $block->getCustomRegistrationViewModel();
+    $helper = $customRegistrationViewModel->getCustomOrderHelper();
+    $allCustomFields = $block->getHelper()->getAllCustomFields();
+?>
+<form class="form form-edit-account"
+      action="<?= $block->escapeUrl($block->getUrl("customregistration/editadditionalinfo/")) ?>"
+      method="post" id="form-validate" enctype="multipart/form-data" data-mage-init='{"validation":{}}'>
+<fieldset class="fieldset wk-edit-additional-info"
+        data-hasrequired="<?= $block->escapeHtml(__('* Required Fields')) ?>">
+    <legend class="legend"><span><?= $block->escapeHtml(__('Additional Account Information')) ?></span></legend><br>
+    <?php
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $customerSession = $objectManager->get('Magento\Customer\Model\Session');
+    $marketplaceHelper = $objectManager->get('Webkul\Marketplace\Helper\Data');
+    // Check Seller/Vendor Status and if it is, then show Wallet Address if not then hide it
+
+    if( $marketplaceHelper->isSeller() ) {
+
+        $attrCollection = $block->attributeCollectionFilter();
+        $customerData = $block->getCurrentCustomer()->toArray();
+        $hasAttributes = false;
+        $hiddenAttributesCode = [];
+
+        foreach ($attrCollection as $attributeData) {
+            $attrAsArray = $attributeData->toArray();
+            $isRequiredArray = explode(' ', $attributeData->getFrontendClass());
+
+            $usedInForms = $block->getUsedInForms($attributeData->getId());
+            $isShowOnEditPage = in_array('customer_account_edit', $usedInForms);
+            $fieldValue = '';
+            $fileValue = '';
+            $imageValue = '';
+
+            if ($attrAsArray['attribute_code'] == 'wallet_addr') {
+                var_dump($attrAsArray['attribute_code']);
+                var_dump($customData[$attrAsArray['attribute_code']]);
+            }
+            // isset($customerData[$attrAsArray['attribute_code']]) && $attrAsArray['attribute_code'] != 'office_name' && $attrAsArray['attribute_code'] != 'office_id'
+            if (isset($customerData[$attrAsArray['attribute_code']]) && $attrAsArray['attribute_code'] != 'office_name' && $attrAsArray['attribute_code'] != 'office_id') {
+                $value = $customerData[$attrAsArray['attribute_code']];
+                if ($attrAsArray['frontend_input'] == 'date' && $value) {
+                    $fieldValue = date('m/d/Y', strtotime($value));
+                } elseif (in_array($attrAsArray['frontend_input'], ['boolean', 'select', 'multiselect'])) {
+                    $fieldValue = $value;
+                } elseif ($attrAsArray['frontend_input'] == 'image') {
+                    $fieldValue = '<div class="wk_images">
+                        <a target="_blank" href="'.$helper->encodeFileName($attrAsArray['frontend_input'], $value).'">
+                            <img src="'.$helper->encodeFileName($attrAsArray['frontend_input'], $value)
+                                .'" class="image">
+                        </a>
+                        <span class="wk-del-icon">x</span>
+                    </div>';
+                    $imageValue = $value;
+                } elseif ($attrAsArray['frontend_input'] == 'file') {
+                    if (!is_array($value)) {
+                        $fileNameArray = explode("/", $value);
+                        $fname = end($fileNameArray);
+                        $fieldValue = "<a class='wk_file' alt='file'
+                            href='".$block->encodeFileName($attrAsArray['frontend_input'], $value)."'>".$fname."</a>";
+                        $fieldValue .= "<span title=".__('Remove')." class='wk-del-file-icon'>x</span>";
+                        $fileValue = $value;
+                    } else {
+                        $fileValue = '';
+                    }
+                } else {
+                    $fieldValue = $block->escapeHtml($value);
+                }
+            }
+            // var_dump($attrAsArray['attribute_code']);
+            ?>
+            <!-- Hide Unecessary Custom Fields : office_name, office_id -->
+            <?php if ($isShowOnEditPage && isset($customerData[$attrAsArray['attribute_code']]) && $attrAsArray['attribute_code'] != 'office_name' && $attrAsArray['attribute_code'] != 'office_id'): ?>
+                <?php //var_dump($attrAsArray['attribute_code']);
+                $hasAttributes = true;
+                $attributeLabel = $attributeData->getFrontendLabel();
+                if ($attributeData->getStoreLabel() != '') {
+                    $attributeLabel = $attributeData->getStoreLabel();
+                }
+                ?>
+                <div class="field
+                    <?= /*@noEscape*/ ($attributeData->getFrontendInput() == 'boolean') ? ' toggle-field ' : '' ?>
+                    <?= /** @noEscape */ $attributeData->getAttributeCode() ?>
+                    <?= in_array('required', $isRequiredArray)?'required':'' ?>">
+
+                    <label for="<?= /*@noEscape*/ $attributeData->getAttributeCode() ?>"class="label">
+                        <span><?= $block->escapeHtml($attributeLabel); ?></span>
+                    </label>
+
+                    <div class="control">
+                    <?php if ($attributeData->getFrontendInput() == 'text'): ?>
+                        <input type="text" name="<?= /*@noEscape*/ $attributeData->getAttributeCode() ?>"
+                            id="<?= /*@noEscape*/ $attributeData->getAttributeCode() ?>"
+                            title="<?= $block->escapeHtml(__('My Attribute')) ?>"
+                            class="input-text <?= /*@noEscape*/ $attributeData->getFrontendClass() ?>"
+                            <?= /*@noEscape*/ in_array('required', $isRequiredArray)
+                                ? 'data-validate="{required:true}"'
+                                :'' ?>
+                            value="<?= /*@noEscape*/ $fieldValue; ?>" autocomplete="off">
+                    <?php elseif ($attributeData->getFrontendInput() == 'textarea'):?>
+                        <textarea name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                            id="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                            class="input-text <?= /*@noEscape*/ $attributeData->getFrontendClass() ?>"
+                            <?= /*@noEscape*/ in_array('required', $isRequiredArray)
+                                ? 'data-validate="{required:true}"'
+                                :'' ?> ><?= /*@noEscape*/ $fieldValue; ?></textarea>
+                    <?php elseif ($attributeData->getFrontendInput() == 'date'): ?>
+                        <input type="text" name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                            id="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                            value="<?= /*@noEscape*/ $fieldValue; ?>"
+                            class="dob_type <?= /*@noEscape*/ $attributeData->getFrontendClass() ?> wk-date-validator"
+                            <?= /*@noEscape*/ in_array('required', $isRequiredArray)
+                                ? 'data-validate="{required:true}"'
+                                :'' ?>
+                            autocomplete="off" readonly>
+                        <button style="margin-left: -3.4rem;"
+                                value="<?= /** @noEscape */ $attrAsArray['attribute_code'] ?>"
+                                type="button" class="ui-datepicker-trigger">
+                            <span><?= $block->escapeHtml(__('Select Date')) ?></span>
+                        </button>
+                        <?php elseif ($attributeData->getFrontendInput() == 'select'):
+                            $optiondata = $attributeData->getSource()->getAllOptions();
+                            $default = (!empty($attributeData->getDefaultValue())) ? $attributeData->getDefaultValue() : '';
+                            $fieldValue = ($fieldValue) ? $fieldValue : $default;
+                            usort($optiondata, function ($a, $b) {
+                                if ($a['value'] && $b['value']) {
+                                    return $a['value'] - $b['value'];
+                                }
+                            }); ?>
+                            <?php if ($attributeData->getWkFrontendInput() == 'radio') { ?>
+                                <?php foreach ($optiondata as $instance) { ?>
+                                    <?php if ($instance['value']) { ?>
+                                        <div>
+                                            <input <?= /*@noEscape*/ in_array('required', $isRequiredArray)?'required':'' ?>
+                                                type="radio" name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                                data-attr-id="<?= /*@noEscape*/ $attributeData->getAttributeId()?>"
+                                                <?= /*@noEscape*/ $fieldValue == $instance['value'] ? 'checked' : ''; ?>
+                                                value="<?= /*@noEscape*/ $instance['value'] ?>"
+                                                class="<?= /*@noEscape*/ $block->hasDependentFields($attributeData->getAttributeId()).' '
+                                            .$attributeData->getFrontendClass() ?>"/>
+                                            <span> <?= /*@noEscape*/ $instance['label'] ?></span>
+                                        </div>
+                                    <?php } ?>
+                                <?php } ?>
+                            <?php } else { ?>
+                                <select name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                    id="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                    data-attr-id="<?= /*@noEscape*/ $attributeData->getAttributeId()?>"
+                                    class="input-select <?= /*@noEscape*/
+                                        $block->hasDependentFields($attributeData->getAttributeId()).' '
+                                        .$attributeData->getFrontendClass() ?>"
+                                    <?= /*@noEscape*/ in_array('required', $isRequiredArray)
+                                        ? 'data-validate="{required:true}"'
+                                        :'' ?>>
+                                <?php foreach ($optiondata as $instance) { ?>
+                                    <?php if ($instance['value'] != ''): ?>
+                                        <option value="<?= /*@noEscape*/ $instance['value'] ?>"
+                                                <?= /*@noEscape*/ $fieldValue == $instance['value'] ? 'selected' : ''; ?>>
+                                            <?= /*@noEscape*/ $instance['label'] ?>
+                                        </option>
+                                    <?php endif; ?>
+                                <?php } ?>
+                                </select>
+                        <?php } ?>
+                    <?php elseif ($attributeData->getFrontendInput() == 'multiselect'):
+                        $optiondata = $attributeData->getSource()->getAllOptions();
+                        $default = (!empty($attributeData->getDefaultValue())) ? $attributeData->getDefaultValue() : '';
+                        $fieldValue = (!empty($fieldValue)) ? $fieldValue : $default;
+                        usort($optiondata, function ($a, $b) {
+                            if ($a['value'] && $b['value']) {
+                                return $a['value'] - $b['value'];
+                            }
+                        }); ?>
+                        <?php if (!is_array($fieldValue)) { ?>
+                            <?php $fieldValueSelected = explode(',', $fieldValue); ?>
+                        <?php } else { ?>
+                            <?php $fieldValueSelected = $fieldValue; ?>
+                        <?php } ?>
+                        <select name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>[]"
+                            id="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                            data-attr-id="<?= /*@noEscape*/ $attributeData->getAttributeId()?>"
+                            class="input-select <?= /*@noEscape*/
+                                $block->hasDependentFields($attributeData->getAttributeId()).' '
+                                .$attributeData->getFrontendClass() ?>"
+                            <?= /*@noEscape*/ in_array('required', $isRequiredArray)
+                                ? 'data-validate="{required:true}"'
+                                : '' ?> multiple="multiple">
+                        <?php foreach ($optiondata as $instance) { ?>
+                            <?php if ($instance['value'] != ''): ?>
+                                <option value="<?= /*@noEscape*/ $instance['value'] ?>"
+                                    <?= /* @noEscape */
+                                    ($fieldValue != "" && in_array($instance['value'], $fieldValueSelected))
+                                        ? 'selected'
+                                        : '' ?>>
+                                    <?= /*@noEscape*/ $instance['label'];?>
+                                </option>
+                            <?php endif; ?>
+                        <?php } ?>
+                        </select>
+                    <?php elseif ($attributeData->getFrontendInput() == 'boolean'): ?>
+                        <div class="admin__actions-switch" data-role="switcher">
+                            <input type="hidden" name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                id="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                value="<?= /*@noEscape*/ $fieldValue ?>">
+                            <input type="checkbox"
+                                    id="switch_<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                class="wkinput-text wkinput-switch admin__actions-switch-checkbox
+                                    <?= /*@noEscape*/ $attributeData->getFrontendClass() ?>"
+                                data-parent="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                <?= /*@noEscape*/ in_array('required', $isRequiredArray)
+                                    ? 'data-validate="{required:true}"'
+                                    :'' ?>
+                                <?= /*@noEscape*/ ($fieldValue!= 0) ? 'checked' : ''; ?>>
+                            <label class="admin__actions-switch-label"
+                                    for="switch_<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>">
+                                <span class="admin__actions-switch-text" data-text-on="Yes" data-text-off="No"></span>
+                            </label>
+                        </div>
+                    <?php elseif ($attributeData->getFrontendInput() == 'image'): ?>
+                        <?php if ($imageValue != ''): ?>
+                            <?= /*@noEscape*/ $fieldValue; ?>
+                            <input type="file" name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                id="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                data-allowed = "<?= /*@noEscape*/ $attrAsArray['note']; ?>"
+                                value="<?= /*@noEscape*/ $imageValue; ?>"
+                                class="input-file attribute_image custom_file
+                                <?= /*@noEscape*/ str_replace("required", "", $attributeData->getFrontendClass()) ?>">
+                            <input type="hidden" name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                value="<?= /*@noEscape*/ $imageValue; ?>">
+                        <?php else: ?>
+                            <input type="file" name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                id="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                data-allowed = "<?= /*@noEscape*/ $attrAsArray['note']; ?>" value=""
+                                class="input-file attribute_image custom_file
+                                <?= /*@noEscape*/ $attributeData->getFrontendClass() ?>"
+                                <?= /*@noEscape*/ in_array('required', $isRequiredArray)
+                                    ? 'data-validate="{required:true}"'
+                                    :'' ?>>
+                        <?php endif; ?>
+                        <br>
+                        <span class="note"><span><?= /*@noEscape*/ $attrAsArray['note'] ?></span></span><br>
+                        <div id="wk_add_images_container">
+                        </div>
+                    <?php elseif ($attributeData->getFrontendInput() == 'file'): ?>
+                        <?php if ($fileValue != ''): ?>
+                            <input type="file" name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                id="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                data-allowed="<?= /*@noEscape*/ $attrAsArray['note']; ?>"
+                                class="input-file custom_file
+                                <?= /*@noEscape*/ str_replace("required", "", $attributeData->getFrontendClass()) ?>">
+                            <input type="hidden" name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                value="<?= /*@noEscape*/ $fileValue; ?>">
+                            <br>
+                            <span><?= /*@noEscape*/ $fieldValue; ?></span>
+                        <?php else: ?>
+                            <input type="file" name="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                id="<?= /*@noEscape*/ $attrAsArray['attribute_code'] ?>"
+                                class="input-file custom_file
+                                <?= /*@noEscape*/ $attributeData->getFrontendClass() ?>"
+                                data-allowed="<?= /*@noEscape*/ $attrAsArray['note']; ?>"
+                                <?= /*@noEscape*/ in_array('required', $isRequiredArray)
+                                    ? 'data-validate="{required:true}"'
+                                    : '' ?>>
+                        <?php endif; ?>
+                        <br>
+                        <span class="note"><span><?= /*@noEscape*/ $attrAsArray['note'] ?></span></span><br>
+                    <?php endif; ?>
+                    </div>
+                </div>
+                <?php else:
+                    $hiddenAttributesCode[] = $attributeData->getAttributeCode();
+                endif; ?>
+            <?php
+        }
+    }
+    ?>
+<?= $block->getChildHtml('account_create_privacy_condition');?>
+<?= $block->getChildHtml('style_wk_template');?>
+<?php if ($hasAttributes) { ?>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action save primary" title="<?= $block->escapeHtml(__('Save')) ?>">
+                <span><?= $block->escapeHtml(__('Save')) ?></span>
+            </button>
+        </div>
+</div>
+<?php } else { ?>
+    <span><?= $block->escapeHtml(__('No Additional Account Information')) ?></span>
+    <?php } ?>
+</fieldset>
+</form>
+<style>
+span.wk-del-icon:before {
+    content: '\e604';
+    font-family: 'luma-icons';
+    display: none;
+}
+</style>
+<script id="dependent_field_template" type="text/x-magento-template">
+    <div class="field customer_type <%- data.dependableClass %> <%- data.fieldDetails.isRequired ? 'required':'' %>">
+        <label for="customer_type" class="label">
+            <span><%- data.fieldDetails.frontend_label %></span>
+        </label>
+        <div class="control">
+            <% if (data.fieldDetails.frontend_input == "textarea") { %>
+                <textarea name="<%- data.fieldDetails.attribute_code %>" id="<%- data.fieldDetails.attribute_code %>"
+                    class="input-text <%- data.fieldDetails.frontend_class %>">
+                    <%- data.value %>
+                </textarea>
+            <% } else if (data.fieldDetails.frontend_input == "text") { %>
+                <input type="text" name="<%- data.fieldDetails.attribute_code %>"
+                    id="<%- data.fieldDetails.attribute_code %>"
+                    title="<%- data.fieldDetails.frontend_label %>"
+                    value="<%- data.value %>"
+                    class="input-text <%- data.fieldDetails.frontend_class %>"
+                    autocomplete="off">
+            <% } else if (data.fieldDetails.frontend_input == "date") { %>
+                <input type="text" name="<%- data.fieldDetails.attribute_code %>"
+                    id="<%- data.fieldDetails.attribute_code %>"
+                    title="<%- data.fieldDetails.frontend_label %>"
+                    placeholder="MM/DD/YYYY"
+                    value="<%- data.value %>"
+                    class="dob_type wk-date-validator validate-date <%- data.fieldDetails.frontend_class %>"
+                    autocomplete="off">
+            <% } else if (data.fieldDetails.frontend_input == "image") { %>
+                <div class="wk_images">
+                    <a target="_blank" href="<%- data.fileUrl %>">
+                        <img src="<%- data.fileUrl %>" class="image">
+                    </a>
+                    <span class="wk-del-icon">x</span>
+                </div>
+                <input type="file" name="<%- data.fieldDetails.attribute_code %>"
+                    id="<%- data.fieldDetails.attribute_code %>"
+                    class="input-text custom_file wk_attr_custom_image <%- data.fieldDetails.frontend_class %>"
+                    data-allowed = "<%- data.fieldDetails.note %>"><br>
+                <span class="note"><span><%- data.fieldDetails.note %></span></span>
+            <% } else if (data.fieldDetails.frontend_input == "file") { %>
+                <input type="file" name="<%- data.fieldDetails.attribute_code %>"
+                    id="<%- data.fieldDetails.attribute_code %>"
+                    class="input-text custom_file <%- data.fieldDetails.frontend_class %>"
+                    data-allowed = "<%- data.fieldDetails.note %>"><br>
+                <span class="note"><span><%- data.fieldDetails.note %></span></span>
+                <span>
+                    <a class="wk_file" alt="file" href="<%- data.fileUrl %>"><%- _.i18n('download') %></a>
+                    <span title="<%- _.i18n('Remove') %>" class='wk-del-file-icon'>x</span>
+                </span>
+            <% } else if (data.fieldDetails.frontend_input == "boolean") { %>
+                <div class="admin__actions-switch" data-role="switcher">
+                    <input type="checkbox"
+                        name="<%- data.fieldDetails.attribute_code %>"
+                        id="<%- data.fieldDetails.attribute_code %>"
+                        class="wkinput-text admin__actions-switch-checkbox <%- data.fieldDetails.frontend_class %>"
+                        value="1">
+                    <label class="admin__actions-switch-label" for="<%- data.fieldDetails.attribute_code %>">
+                        <span class="admin__actions-switch-text" data-text-on="Yes" data-text-off="No"></span>
+                    </label>
+                </div>
+            <% } else if (data.fieldDetails.frontend_input == "select"
+                || data.fieldDetails.frontend_input == "multiselect") { %>
+                <% if (data.fieldDetails.custom.custom_type == "select"
+                    || data.fieldDetails.custom.custom_type == "multiselect") { %>
+                    <select name="<%- data.fieldDetails.attribute_code %>"
+                        id="<%- data.fieldDetails.attribute_code %>"
+                        data-attr-id="<%- data.fieldDetails.attribute_id %>"
+                        class="input-select <%- data.fieldDetails.frontend_class %>
+                            <%- data.fieldDetails.custom.dependent_fields %>"
+                        <%- data.fieldDetails.frontend_input == 'multiselect' ? 'multiple' : '' %>>
+                        <% if (data.fieldDetails.frontend_input == 'select') { %>
+                            <option value=""><%- _.i18n('Select Option') %></option>
+                        <% } %>
+                        <% _.each(data.fieldDetails.options, function(item) { %>
+                            <option value="<%- item.value %>"
+                                <%- data.value ==  item.value ? 'selected="selected"' : '' %>><%- item.label %></option>
+                        <% }); %>
+                    </select>
+                <% } else if (data.fieldDetails.custom.custom_type == "radio") { %>
+                    <% _.each(data.fieldDetails.options, function(item) { %>
+                        <div>
+                            <input name="<%- data.fieldDetails.attribute_code %>" type="radio"
+                                value="<%- item.value %>" data-attr-id="<%- data.fieldDetails.attribute_id %>"
+                                class="<%- data.fieldDetails.custom.dependent_fields %>"
+                                <%- data.value == item.value ? 'checked' : '' %> />
+                            <span><%- item.label %></span>
+                        </div>
+                    <% }); %>
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+</script>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Webkul_CustomRegistration/js/custom-fields":<?= /*@noEscape*/ $block->getScriptJsonData()?>
+    }
+}
+</script>

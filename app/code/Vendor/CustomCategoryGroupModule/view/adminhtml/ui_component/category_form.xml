@@ -1,0 +1,265 @@
+<?xml version="1.0"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="custom_category_group">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string">Custom Values Group For Smart Contract</item> <!-- your category group name -->
+                <item name="collapsible" xsi:type="boolean">true</item>
+                <item name="sortOrder" xsi:type="number">99</item>
+            </item>
+        </argument>
+        <field name="payment_method">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Payment Method</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">5</item>
+                    <item name="value" xsi:type="string">MOS</item>
+                </item>
+            </argument>
+        </field>
+        <field name="direct_bonus_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Direct Bonus</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">15</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="reserve_for_matching_bonus_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Reserve for Matching Bonus</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="reserve_for_team_bonus_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Reserve for Team Bonus</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">25</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="reserve_for_range_bonus_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Reserve for Range Bonus</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="reserve_for_anual_bonus_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Reserve for Anual Bonus</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">35</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="genu_revenues_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">GENU revenues</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">50</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="salesman_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Salesman</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">55</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="community_fund_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Community fund</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">60</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="liquidity_fund_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Liquidity fund</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">65</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="infrastructure_expenses_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Infrastructure expenses</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">70</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="i_d_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">- I+D</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">80</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="others_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">- Others *</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">85</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="founders_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Founders</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">90</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ambassadors_attr">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Ambassadors</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-digits-range" xsi:type="string">0-1000</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">95</item>
+                    <item name="value" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend"
+       type="Webkul\CustomRegistration\Model\Customer\Attribute\Backend\Multiselect"/>
+    <type name="Magento\Customer\Controller\Account\CreatePost">
+        <plugin name="custom-create-post" type="Webkul\CustomRegistration\Plugin\Controller\CreatePost" sortOrder="1" />
+    </type>
+    <type name="Magento\Customer\Model\Customer\DataProviderWithDefaultAddresses">
+        <plugin name="after-getMeta" type="Webkul\CustomRegistration\Plugin\Customer\DataProvider" sortOrder="1" />
+    </type>
+    <type name="Magento\Customer\Model\Customer\DataProviderWithDefaultAddresses">
+        <plugin name="after-getData" type="Webkul\CustomRegistration\Plugin\Customer\GetData" sortOrder="1" />
+    </type>
+    <type name="Magento\Customer\Controller\Adminhtml\Index\Save">
+        <plugin name="before-save" type="Webkul\CustomRegistration\Plugin\Customer\Save" sortOrder="1" />
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="customregistration_allfields_listing_data_source" xsi:type="string">Webkul\CustomRegistration\Model\ResourceModel\Customfields\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Webkul\CustomRegistration\Model\ResourceModel\Customfields\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">wk_customfields</argument>
+            <argument name="eventPrefix" xsi:type="string">customregistration_allfields_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">allfields_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Webkul\CustomRegistration\Model\ResourceModel\Customfields</argument>
+        </arguments>
+    </type>
+    <virtualType name="CustomFieldsGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="FieldsGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Webkul\CustomRegistration\Model\ResourceModel\Customfields\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">CustomFieldsGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+</config>

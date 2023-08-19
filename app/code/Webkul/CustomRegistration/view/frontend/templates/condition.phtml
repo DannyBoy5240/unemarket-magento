@@ -1,0 +1,49 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+
+if ($block->getConfigData('enable_registration')) {
+    
+    $condition = $block->getConditionData();
+    ?>
+    <?= /** @escapeNotVerified */ $block->getChildHtml('style_template'); ?>
+    <div class="field choice privacy-container fieldset">
+      
+        <div class="checkbox-container field required">
+
+            <input type="checkbox"
+                id="<?= $block->escapeHtml($block->getNameInLayout()); ?>"
+                name="<?= $block->escapeHtml($block->getNameInLayout()); ?>"
+                value="0"
+                onchange="this.value = this.checked ? 1 : 0;"
+                class="checkbox"
+                data-validate="{required:true}"/>
+          
+            <label for="<?= $block->escapeHtml($block->getNameInLayout()); ?>" class="label">
+                <span>
+                    <span id="read-term-condition" class="clearer news-term-condition">
+                        <?= $block->escapeHtml(__('Terms & Conditions ')) ?>
+                    </span>
+                    <?= $block->escapeHtml(__('and')) ?>
+                    <span id="read-privacy" class="clearer read-privacy">
+                        <?= $block->escapeHtml(__(' Privacy & Cookie Policy')) ?>
+                    </span>
+                </span>
+            </label>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "termAndCondition": <?= /* @noEscape */ $block->getConditionContent() ?>
+        }
+    }
+    </script>
+<?php } ?>

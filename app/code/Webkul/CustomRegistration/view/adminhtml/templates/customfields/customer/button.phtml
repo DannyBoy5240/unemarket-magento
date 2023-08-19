@@ -1,0 +1,55 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+?>
+<script>
+require([
+    "jquery",
+    "mage/mage",
+    "prototype"
+], function($){
+    $.each($('.custom_date_field'),function(i,v) {
+        $(this).calendar({dateFormat:'M\/d\/yy'});
+    });
+    $("input[type='file']").attr('form','customer_form');
+    $("select[multiple='multiple']").attr('form','customer_form');
+    $("input[type='checkbox']").on('change', function() {
+        if (this.checked) {
+            $(this).attr('form','customer_form');
+            $(this).attr('value','1');
+        } else {
+            $(this).attr('value','0');  
+        }
+    });
+        /* Dependable Fields Control */
+    $.each($( "select[class*='dependable_field_']" ), function() {
+        var childClass = $(this).attr('id');
+        childClass = childClass.replace('customfields_','');
+        var parentValue = $.trim($(this).find("option:selected").text());
+        if (parentValue == 'No' || parentValue == '') {
+            $('#'+$('.child_'+childClass).attr('id')).parents('.field').hide();
+        }
+    });
+    
+    $( "select[class*='dependable_field_']" ).change(function(target) {
+        var childClass = $(this).attr('id');
+        childClass = childClass.replace('customfields_','');
+        var parentValue = $.trim($(this).find("option:selected").text());
+        if (parentValue == 'Yes') {
+            $('#'+$('.child_'+childClass).attr('id')).parents('.field').show();
+        } else {
+            $('.child_'+childClass).removeAttr('data-validate');
+            $('#'+$('.child_'+childClass).attr('id')).parents('.field').hide();
+        }
+    });
+
+    /* End of Dependable Field controll*/
+});
+</script>

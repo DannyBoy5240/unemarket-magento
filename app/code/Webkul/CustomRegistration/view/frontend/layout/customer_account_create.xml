@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+        <css src="Webkul_CustomRegistration::css/product.css"/>
+    </head>
+    <body>
+        <referenceBlock name="customer_form_register" >
+            <action method="setShowAddressFields" ifconfig="customer_termandcondition/addresinfo/enable_registration">
+                <argument name="show.address.fields" xsi:type="boolean">true</argument>
+            </action>
+            <action method="setTemplate" ifconfig="customer_termandcondition/addresinfo/enable_registration">
+                <argument name="template" xsi:type="string">Webkul_CustomRegistration::register.phtml</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="form.additional.info">
+            <block class="Webkul\CustomRegistration\Block\Customfields" name="custom_form_additional_info_customer" template="Webkul_CustomRegistration::customfields.phtml"/>
+            <block class="Webkul\CustomRegistration\Block\Condition" name="account_create_privacy_condition" template="Webkul_CustomRegistration::condition.phtml"/>
+            <block class="Webkul\CustomRegistration\Block\Condition" name="style_wk_template" template="Webkul_CustomRegistration::style.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

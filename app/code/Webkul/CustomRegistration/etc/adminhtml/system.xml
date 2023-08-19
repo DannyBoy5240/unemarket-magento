@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CustomRegistration
+ * @author    Webkul
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+            <tab id="webkul" translate="label" sortOrder="10" class="wk-config-tab-class">
+            <label>Webkul</label>
+        </tab>
+        <section id="customer_termandcondition" translate="label" type="text" sortOrder="305" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Custom Registration Settings</label>
+            <tab>webkul</tab>
+            <resource>Webkul_CustomRegistration::config_termandcondition</resource>
+            <group id="parameter" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Terms &amp; Conditions and Privacy Setting</label>
+                <field id="enable_registration" translate="label comment" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Terms and Conditions on Registration Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="privacy_heading" translate="label comment" sortOrder="3" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Privacy Popup Model Heading</label>
+                </field>
+                <field id="term_heading" translate="label comment" sortOrder="3" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Term and Condition Popup Model Heading</label>
+                </field>
+                <field id="button_text" translate="label comment" sortOrder="4" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Model Button Text</label>
+                </field>
+                <field id="button_text_color" translate="label comment" sortOrder="4" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Button Text Color</label>
+                    <frontend_model>Webkul\CustomRegistration\Block\ColorPicker</frontend_model>
+                    <comment>Save hexa code e.g: #FFFFFF, leave blank for default</comment>
+                </field>
+                <field id="button_color" translate="label comment" sortOrder="4" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Model Button Color</label>
+                    <frontend_model>Webkul\CustomRegistration\Block\ColorPicker</frontend_model>
+                    <comment>Save hexa code e.g: #FFFFFF, leave blank for default</comment>
+                </field>
+                <field id="header_background" translate="label comment" sortOrder="4" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Model Header Background Color</label>
+                    <frontend_model>Webkul\CustomRegistration\Block\ColorPicker</frontend_model>
+                    <comment>Save hexa code e.g: #FFFFFF, leave blank for default</comment>
+                </field>
+                <field id="model_background" translate="label comment" sortOrder="4" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Model Background Color</label>
+                    <frontend_model>Webkul\CustomRegistration\Block\ColorPicker</frontend_model>
+                    <comment>Save hexa code e.g: #FFFFFF, leave blank for default</comment>
+                </field>
+                <field id="animate" translate="label comment" sortOrder="4" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Model Animation Type</label>
+                    <source_model>Webkul\CustomRegistration\Model\Config\Source\Animation</source_model>
+                </field>
+                <field id="is_html" translate="label comment" sortOrder="5" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Content as</label>
+                    <source_model>Webkul\CustomRegistration\Model\Config\Source\Content</source_model>
+                </field>
+                <field id="termcondition" translate="label comment" sortOrder="7" type="textarea" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Terms &amp; Conditions</label>
+                </field>
+                <field id="privacy" translate="label comment" sortOrder="8" type="textarea" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Privacy &amp; Cookie Policy</label>
+                </field>
+            </group>
+            <group id="addresinfo" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Enable/Disable Address Information</label>
+                <field id="enable_registration" translate="label comment" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Address Fields</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="customregistration_registration_field_product_information" translate="label" type="text" sortOrder="700" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Custom Registration Field Product Information</label>
+                <field id="author" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <frontend_model>Webkul\CustomRegistration\Block\Adminhtml\SupportLinks</frontend_model>
+                    <!-- <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model> -->
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
