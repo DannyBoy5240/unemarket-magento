@@ -1,0 +1,22 @@
+{
+    "name": "cryptom2/currency-precision",
+    "version": "v1.0.0",
+    "description": "Auxiliary module to handle currency precision for crypto currencies",
+    "type": "magento2-module",
+    "authors": [
+        {
+            "name": "Ihor Oleksiienko",
+            "homepage": "https://github.com/torys877",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Crypto\\CurrencyPrecision\\": ""
+        }
+    }
+}

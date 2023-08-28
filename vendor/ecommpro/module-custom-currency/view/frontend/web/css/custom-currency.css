@@ -1,0 +1,11 @@
+.currency-symbol svg,
+.currency-symbol img,
+.custom-currency
+ {
+    height: 1em;
+}
+
+
+.price-box .price-container > span {
+    white-space: nowrap;
+}

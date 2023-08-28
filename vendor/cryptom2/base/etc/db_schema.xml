@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Ihor Oleksiienko (https://github.com/torys877)
+ * See LICENSE for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order" resource="default" engine="innodb">
+        <column xsi:type="varchar" name="order_hash" length="255" nullable="true" comment="Order Hash"/>
+        <index referenceId="SALES_ORDER_ORDER_HASH" indexType="hash">
+            <column name="order_hash"/>
+        </index>
+    </table>
+</schema>

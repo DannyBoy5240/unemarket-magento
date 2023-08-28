@@ -1,0 +1,10 @@
+{
+    "sales_order": {
+        "column": {
+            "order_hash": true
+        },
+        "index": {
+            "SALES_ORDER_ORDER_HASH": true
+        }
+    }
+}
